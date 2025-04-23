@@ -289,8 +289,15 @@ rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 
 ### 3.5 Build xarm_ros2
 ```bash
-sudo apt install colcon
-pip install empy
+deactivate
+rm -rf build install log
+colcon build
+
+source /opt/ros/humble/setup.bash
+
+sudo apt update
+sudo apt install python3-colcon-common-extensions -y
+sudo apt install python3-empy -y
 pip install numpy
 pip install lark
 
