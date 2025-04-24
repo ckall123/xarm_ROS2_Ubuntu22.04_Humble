@@ -312,4 +312,25 @@ colcon build
 colcon build --packages-select xarm_api
 ```
 
-###
+### Using Xarm
+
+```bash
+cd ~/dev_ws/
+source install/setup.bash
+```
+
+...or
+```bash
+echo "source ~/dev_ws/install/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+install env
+```
+sudo apt install python3-lxml
+```
+run 
+```bash
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true
+```
+to start Gazebo and RViz
