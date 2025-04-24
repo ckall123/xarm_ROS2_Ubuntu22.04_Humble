@@ -15,11 +15,13 @@ mkdir -p dev_ws/src
 
 **Create `.venv**
 ```bash
+cd ~/dev_ws/
 python3.10 -m venv .venv
 ```
 
 **activate `.venv`**
 ```bash
+cd ~/dev_ws/
 source .venv/bin/activate
 ```
 
