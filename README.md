@@ -335,5 +335,10 @@ ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true
 ```
 to start Gazebo and RViz
 
+run with real robot
+```bash
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true robot_ip:=
+```
+
 ### Try to using the python code
 
