@@ -312,7 +312,7 @@ colcon build
 colcon build --packages-select xarm_api
 ```
 
-### Using Xarm
+## Using Xarm
 
 ```bash
 cd ~/dev_ws/
@@ -334,3 +334,6 @@ run
 ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true
 ```
 to start Gazebo and RViz
+
+### Try to using the python code
+
