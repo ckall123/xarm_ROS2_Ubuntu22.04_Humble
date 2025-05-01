@@ -351,13 +351,41 @@ fake camera
 ```bash
 ros2 run rqt_image_view rqt_image_view
 ```
+**重要！請從下拉選單選擇：**
+`/image_raw`
+
+
 
 real camera
 
-```bash
-sudo apt install ros-${ROS_DISTRO}-v4l2-camera
-ros2 run v4l2_camera v4l2_camera_node
+To see what divice you have:
 ```
+v4l2-ctl --list-devices
+```
+
+你會看到像：
+```bash
+UVC Camera (046d:081b):
+    /dev/video2
+HP Wide Vision HD Camera:
+    /dev/video0
+```
+install v4l2_camera node:
+```bash
+sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
+sudo apt install ros-${ROS_DISTRO}-v4l2-camera
+```
+
+
+
+To see your image:
+```bash
+ros2 run v4l2_camera v4l2_camera_node
+ros2 run rqt_image_view rqt_image_view
+```
+
+**重要！請從下拉選單選擇：**
+`/image_raw`
 
 ### Try to using the python code
 
