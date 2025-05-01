@@ -340,18 +340,23 @@ run with real robot
 ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true robot_ip:=
 ```
 
-using camera
+using camera `add_realsense_d435i:=true`
+
+```bash
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true add_realsense_d435i:=true
+```
 
 fake camera
+
 ```bash
 ros2 run rqt_image_view rqt_image_view
 ```
+
 real camera
+
 ```bash
 sudo apt install ros-${ROS_DISTRO}-v4l2-camera
 ros2 run v4l2_camera v4l2_camera_node
-
-
 ```
 
 ### Try to using the python code
