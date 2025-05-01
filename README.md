@@ -380,7 +380,7 @@ sudo apt install ros-${ROS_DISTRO}-v4l2-camera
 
 To see your image:
 ```bash
-ros2 run v4l2_camera v4l2_camera_node
+ros2 run v4l2_camera v4l2_camera_node --ros-args -p video_device:=/dev/video0
 ros2 run rqt_image_view rqt_image_view
 ```
 
