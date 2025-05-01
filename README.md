@@ -346,7 +346,7 @@ using camera `add_realsense_d435i:=true`
 ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true add_realsense_d435i:=true
 ```
 
-fake camera
+**fake camera**
 
 ```bash
 ros2 run rqt_image_view rqt_image_view
@@ -356,7 +356,7 @@ ros2 run rqt_image_view rqt_image_view
 
 
 
-real camera
+**real camera**
 
 To see what divice you have:
 ```
