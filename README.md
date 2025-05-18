@@ -116,31 +116,30 @@ sudo apt install ros-humble-moveit
 
 ### 2.3 Install [Gazebo](https://classic.gazebosim.org/tutorials?tut=install_ubuntu)
 
-
-#### if you install ROS 2 Jazzy - ******************-------------you will found it is not useful-------------******************
-
 1. 安裝必要的工具：
 ```bash
 sudo apt-get update
 sudo apt-get install lsb-release gnupg curl
 ```
-2. 添加 Gazebo 的官方 GPG 金鑰：
+
+2. install Gazebo Fortress (recommended)
 ```bash
-sudo curl -sSL https://packages.osrfoundation.org/gazebo.gpg -o /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+sudo apt install ros-humble-gazebo-ros-pkgs
+sudo apt install ros-humble-ros-gz
 ```
-3. 添加 Gazebo 的套件庫到系統來源列表：
+安裝完成後，你就可以使用最新版本的 Gazebo 模擬器了！🚀
+
 ```bash
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+ign gazebo
 ```
-4. 更新套件列表並安裝 Gazebo Ionic：
+...or 
 ```bash
-sudo apt-get update
-sudo apt-get install gz-ionic
+ign gazebo empty.sdf
 ```
 
-安裝完成後，你就可以使用最新版本的 Gazebo 模擬器了！🚀
-```
-gz sim
+3. Checking the Installed Version
+```bash
+ign gazebo --version
 ```
 
 這些步驟是根據 Gazebo 官方的安裝指南整理 [Gazebo 官方安裝指南](https://gazebosim.org/docs/latest/install_ubuntu/)
@@ -150,90 +149,16 @@ gz sim
   
 - ROS 2 的整合： 如果你同時使用 ROS 2 Jazzy，Gazebo Ionic 與其有良好的整合性，可以提供更順暢的開發體驗。 [ROS 2 與 Gazebo 的整合](https://github.com/gazebosim/docs/blob/master/ros_installation.md)
 
-### 2.4 Install [ros_gz](https://github.com/gazebosim/ros_gz) - ROS 2 ↔ Gazebo Sim Bridge
-
-  Since we are using **Gazebo Sim (Ionic)** instead of Gazebo Classic,  
-we need to use the new bridge package `ros_gz` to integrate with ROS 2.
+### 2.4 Install ros_gz
 
 First you need to check you GZ version
 ```bash
 gz sim --version
 ```
-**now you have two Options**
 
-**Option 1 : Switch to Gazebo Fortress (recommended)**
-For the best stability and official support, it is recommended that you use Gazebo Fortress, which is the version of Gazebo most compatible with ROS 2 Humble.
-
-1. Remove the existing Gazebo Harmonic (if installed):
 ```bash
-sudo apt remove gz-harmonic
-sudo apt remove 'gz-*' 'libgz-*' 'python3-gz-*' -y
-sudo apt autoremove -y
-```
-
-2. install Gazebo Fortress：
-```bash
-sudo apt-get update
-sudo apt-get install lsb-release gnupg curl
-```
-3. Download and install OSRF's GPG:
-```bash
-sudo curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
-```
-4. Add the Gazebo repository to your system:
-```bash
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
-
-```
-5. Install the ros_gz package:
-```
-sudo apt-get update
-sudo apt-get install ignition-fortress
-```
-
-6. test
-```bash
-ign gazebo
-```
-...or 
-```bash
-ign gazebo empty.sdf
-```
-
-7. Checking the Installed Version
-```bash
-ign gazebo --version
-```
----
----
-**Option 2 : Continue to use Gazebo Harmonic and compile ros_gz from source**
-1. Setting environment:
-```bash
-export GZ_VERSION=harmonic
-```
-
-2. Create a workspace and download the source code:
-```bash
-mkdir -p ~/ros2_ws/src
-cd ~/ros2_ws/src
-git clone -b humble https://github.com/gazebosim/ros_gz.git
-```
-
-3. Install dependencies:
-```bash
-cd ~/ros2_ws
-rosdep update
-rosdep install --from-paths src -i -y --rosdistro humble
-```
-
-4. Compiler Kit:
-```bash
-source /opt/ros/humble/setup.bash
-colcon build --symlink-install
-```
-5. Set environment variables:
-```bash
-source install/setup.bash
+sudo apt update
+sudo apt install ros-humble-ros-gz
 ```
 
 **More info:**
@@ -246,7 +171,6 @@ source install/setup.bash
 **Note:** 
 `gazebo_ros_pkgs` is used for **Gazebo Classic (e.g. gazebo11)**.  
 Since this project uses `gz-ionic` (Gazebo Sim), please use `ros_gz` for ROS integration.
-
 
 ---
 ## How To Use
