@@ -236,6 +236,11 @@ colcon build
 colcon build --packages-select xarm_api
 ```
 
+```
+cd ~/dev_ws
+colcon build --symlink-install
+```
+
 ## Using Xarm
 
 ```bash
