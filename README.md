@@ -49,197 +49,105 @@ source .venv/bin/activate
   - [Humble](https://docs.ros.org/en/ros2_documentation/humble/Installation.html)  ----------- Here I'm install -----------
   - [Jazzy](https://docs.ros.org/en/ros2_documentation/jazzy/Installation.html)
 
-**Setting up your Ubuntu environment**
+
+### Step 0 🧹 先移除錯誤安裝（第一次建議完整清乾淨）
+
 ```bash
-sudo apt update
-sudo apt install locales -y
+sudo apt remove '^ros-humble-*' 'gz-*' 'libgz-*' 'python3-gz-*' 'ignition-*' 'libignition*' --purge -y
+sudo apt autoremove -y
+sudo rm -rf ~/.ros ~/dev_ws /opt/ros/humble
+```
+
+### Step 1 🐢 安裝 ROS 2 Humble
+```bash
+sudo apt update && sudo apt install -y locales
 sudo locale-gen en_US en_US.UTF-8
 sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 export LANG=en_US.UTF-8
-```
-**Enable necessary software sources**
-``` bash
-sudo apt install software-properties-common -y
-sudo add-apt-repository universe
-```
-**setting source && GPG Key**
-```bash 
-sudo apt install curl -y
+
+sudo apt install -y software-properties-common curl
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
 http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | \
 sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+sudo apt update && sudo apt install ros-humble-desktop -y
 ```
-**Install ROS 2 Humble**
+
+🧩 安裝開發工具
 ```bash
-sudo apt update
-sudo apt upgrade -y
-
-sudo apt install ros-humble-desktop -y
-```
-**Development Tools (optional)**
-``` bash
-sudo apt install ros-dev-tools -y
+sudo apt install -y python3-colcon-common-extensions python3-rosdep python3-argcomplete python3-vcstool ros-dev-tools
+sudo apt install -y python3-empy
 ```
 
-**Setting environment variables**
-Enable only on the current terminal:
+🔧 初始化 rosdep
 ```bash
-source /opt/ros/humble/setup.bash
+sudo rosdep init  # 只執行一次
+rosdep update
 ```
-**Automatically enable every time (recommended):**
+
+### Step 2 🤖 安裝 Gazebo Classic（xArm 官方支援的版本）
+```bash 
+sudo apt install -y ros-humble-gazebo-ros-pkgs ros-humble-gazebo-ros2-control
+```
+
+### Step 3 🏗️ 建立開發環境
 ```bash
-echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
-source ~/.bashrc
+mkdir -p ~/dev_ws/src
+cd ~/dev_ws
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-#### Try examples:
-Open two terminals:
-
-**talker**
-```
-ros2 run demo_nodes_cpp talker
-```
-**listener:**
-```
-ros2 run demo_nodes_cpp listener
-```
-
-### 2.2 Install [Moveit2](https://moveit.ros.org/install-moveit2/binary/)
-```
-sudo apt install ros-humble-moveit
-```
-
-### Install Tips [URL](https://gazebosim.org/docs/all/getstarted/)
-[Summary of Compatible ROS and Gazebo Combinations](https://gazebosim.org/docs/latest/ros_installation/)
-
-### 2.3 Install [Gazebo](https://classic.gazebosim.org/tutorials?tut=install_ubuntu)
-
-1. 安裝必要的工具：
-```bash
-sudo apt-get update
-sudo apt-get install lsb-release gnupg curl
-```
-
-2. install Gazebo Fortress (recommended)
-```bash
-sudo apt install ros-humble-gazebo-ros-pkgs
-sudo apt install ros-humble-ros-gz
-```
-安裝完成後，你就可以使用最新版本的 Gazebo 模擬器了！🚀
-
-```bash
-ign gazebo
-```
-...or 
-```bash
-ign gazebo empty.sdf
-```
-
-3. Checking the Installed Version
-```bash
-ign gazebo --version
-```
-
-這些步驟是根據 Gazebo 官方的安裝指南整理 [Gazebo 官方安裝指南](https://gazebosim.org/docs/latest/install_ubuntu/)
-
-**Tips:**
-- Gazebo 的版本更新： Gazebo 團隊最近對版本命名進行了調整，將新版本命名為 Gazebo Ionic，而不是之前的 Garden。因此，套件名稱也相應地更新了。 [Gazebo 官方公告](https://gazebosim.org/docs/latest/getstarted/)
-  
-- ROS 2 的整合： 如果你同時使用 ROS 2 Jazzy，Gazebo Ionic 與其有良好的整合性，可以提供更順暢的開發體驗。 [ROS 2 與 Gazebo 的整合](https://github.com/gazebosim/docs/blob/master/ros_installation.md)
-
-### 2.4 Install ros_gz
-
-First you need to check you GZ version
-```bash
-gz sim --version
-```
-
-```bash
-sudo apt update
-sudo apt install ros-humble-ros-gz
-```
-
-**More info:**
-- [ros_gz GitHub Repository](https://github.com/gazebosim/ros_gz)
-- [Gazebo ROS 2 Integration Guide](https://gazebosim.org/docs/latest/ros_installation/)
-
----
-
-### 💬 Bonus 說明
-**Note:** 
-`gazebo_ros_pkgs` is used for **Gazebo Classic (e.g. gazebo11)**.  
-Since this project uses `gz-ionic` (Gazebo Sim), please use `ros_gz` for ROS integration.
-
----
-## How To Use
-
-### 3.1 Create a workspace
-Create a workspace - Skip this step if you already have a target workspace
-```bash
-cd ~
-mkdir -p dev_ws/src
-```
-
-### 3.2 Obtain source code of "xarm_ros2" repository
-```bash
-# Remember to source ros2 environment settings first
+### Step 4 🔽 複製 xArm 原始碼
+```bash 
 cd ~/dev_ws/src
-# DO NOT omit "--recursive"，or the source code of dependent submodule will not be downloaded.
-# Pay attention to the use of the -b parameter command branch, $ROS_DISTRO indicates the currently activated ROS version, if the ROS environment is not activated, you need to customize the specified branch (foxy/galactic/humble/jazzy)
-git clone https://github.com/xArm-Developer/xarm_ros2.git --recursive -b $ROS_DISTRO
-```
+# 請確認有加上 --recursive 和 -b humble
+git clone https://github.com/xArm-Developer/xarm_ros2.git --recursive -b humble
 
-### 3.3 Update "xarm_ros2" repository
-```bash
-cd ~/dev_ws/src/xarm_ros2
-git pull
+cd xarm_ros2
+# 更新子模組
 git submodule sync
 git submodule update --init --remote
 ```
 
-### 3.4 Install dependencies
+### Step 5 📦 安裝相依套件
 ```bash
-cd ~/dev_ws/
-source .venv/bin/activate
-pip install rosdep
-pip install jinja2 typeguard
-
-# Remember to source ros2 environment settings first
-cd ~/dev_ws/src/
-sudo $(which rosdep) init
-rosdep update
-rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
-```
-
-### 3.5 Build xarm_ros2
-```bash
-deactivate
-rm -rf build install log
-colcon build
-
 source /opt/ros/humble/setup.bash
-
-sudo apt update
-sudo apt install python3-colcon-common-extensions -y
-sudo apt install python3-empy -y
-pip install numpy
-pip install lark
-
-# Remember to source ros2 and moveit2 environment settings first
-cd ~/dev_ws/
-# build all packages
-colcon build
-
-# build selected packages
-colcon build --packages-select xarm_api
-```
-
-```
 cd ~/dev_ws
+pip install -U pip
+pip install rosdep jinja2 typeguard lxml numpy empy==3.3.4 lark-parser
+
+rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
+```
+
+### Step 6 🔨 編譯專案
+```bash
 colcon build --symlink-install
 ```
+如果編譯失敗：
+```bash
+rm -rf build install log
+colcon build --symlink-install
+```
+### Step 7 啟動模擬環境
+✅ 設定環境變數
+
+建議寫進 `.bashrc`：
+```bash 
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+echo "source ~/dev_ws/install/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+✅ 啟動 xArm + MoveIt + Gazebo（含夾爪）
+```bash
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true
+```
+
+------
+------
 
 ## Using Xarm
 
