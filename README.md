@@ -245,9 +245,12 @@ vim /home/{**user_name**}/xarm_world_with_ground.world
     <include>
       <uri>model://sun</uri>
     </include>
+    <include>
+      <uri>model://table</uri>
+      <pose>-0.3 -0.8 0 0 0 0</pose>
+    </include>
   </world>
 </sdf>
-
 ```
 
 **test_your_world**
@@ -260,6 +263,7 @@ source ~/dev_ws/install/setup.bash
 # 測試載入你的世界
 ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py \
   add_gripper:=true \
-  world:=/home/ckall123/xarm_world_with_ground.world
+  world:=/home/ckall123/xarm_world_with_ground.world  # /home//.gazebo/models/xarm_world_with_ground.world
 ```
+
 
