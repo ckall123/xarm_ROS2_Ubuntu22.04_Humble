@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <model name="beer_can">
+    <!-- 初始位置：離地 1 公尺 -->
+    <pose>0 0 1 0 0 0</pose>
+    <static>false</static>
+
+    <link name="body">
+      <gravity>true</gravity>
+
+      <!-- 讓 Gazebo 自動算慣性就把這段刪掉 -->
+      <inertial>
+        <mass>0.39</mass>
+        <inertia>
+          <ixx>0.002014</ixx>
+          <iyy>0.002014</iyy>
+          <izz>0.000590</izz>
+          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+        </inertia>
+      </inertial>
+
+      <collision name="body_collision">
+        <geometry>
+          <cylinder>
+            <radius>0.055</radius>
+            <length>0.23</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name="body_visual">
+        <geometry>
+          <cylinder>
+            <radius>0.055</radius>
+            <length>0.23</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://beer/materials/scripts</uri>
+            <uri>model://beer/materials/textures</uri>
+            <name>Beer/Diffuse</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
