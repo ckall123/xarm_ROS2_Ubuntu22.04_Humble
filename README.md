@@ -230,3 +230,36 @@ ros2 run rqt_image_view rqt_image_view
 - `/home/{**user_name**}/dev_ws/src/xarm_ros2/xarm_gazebo/launch/_robot_beside_table_gazebo.launch.py`
 - `/home/{**user_name**}/dev_ws/src/xarm_ros2/xarm_moveit_config/launch/_robot_moveit_gazebo.launch.py`
 
+run in bash 
+```
+vim /home/{**user_name**}/xarm_world_with_ground.world
+```
+
+```
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+  </world>
+</sdf>
+
+```
+
+**test_your_world**
+`gazebo /home/ckall123/xarm_world_with_ground.world`
+
+```bash
+colcon build --packages-select xarm_moveit_config xarm_gazebo
+source ~/dev_ws/install/setup.bash
+
+# 測試載入你的世界
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py \
+  add_gripper:=true \
+  world:=/home/ckall123/xarm_world_with_ground.world
+```
+
