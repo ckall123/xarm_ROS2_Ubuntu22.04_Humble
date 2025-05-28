@@ -226,3 +226,7 @@ ros2 run rqt_image_view rqt_image_view
 
 ### Try to using the python code
 
+### 如果要讓 gazebo 環境有物理效果 則須 改程式碼
+- `/home/{**user_name**}/dev_ws/src/xarm_ros2/xarm_gazebo/launch/_robot_beside_table_gazebo.launch.py`
+- `/home/{**user_name**}/dev_ws/src/xarm_ros2/xarm_moveit_config/launch/_robot_moveit_gazebo.launch.py`
+
