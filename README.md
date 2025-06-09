@@ -267,4 +267,45 @@ ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py \
 ```
 change your object in `/home/{**user_name**}/.gazebo/models/`
 
+## 控制夾爪黏住東西
+clone this github [https://github.com/IFRA-Cranfield/IFRA_LinkAttacher](https://github.com/IFRA-Cranfield/IFRA_LinkAttacher)
+you need to clone in you workspace 
+```
+cd ~/dev_ws/src
+git clone https://github.com/IFRA-Cranfield/IFRA_LinkAttacher.git
+cd ~/dev_ws
+# colcon build
+colcon build --packages-select linkattacher_msgs ros2_linkattacher
+```
+你的Plugin .so 位置：`~/dev_ws/install/ros2_linkattacher/lib/libgazebo_link_attacher.so`
+加 GAZEBO_PLUGIN_PATH（寫進 ~/.bashrc 或手動加）：
+```
+echo 'export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:~/dev_ws/install/ros2_linkattacher/lib' >> ~/.bashrc
+source ~/.bashrc
+```
+驗證設定
+```
+echo $GAZEBO_PLUGIN_PATH
+```
 
+.world 裡加這行 plugin：
+```
+<plugin name="gazebo_link_attacher" filename="libgazebo_link_attacher.so"/>
+```
+### 讓夾爪被夾起來
+```
+ros2 service call /ATTACHLINK linkattacher_msgs/srv/AttachLink \
+"{model1_name: 'UF_ROBOT', link1_name: 'right_finger', model2_name: 'beer_can', link2_name: 'body'}"
+```
+### 讓夾爪放下
+```
+ros2 service call /DETACHLINK linkattacher_msgs/srv/DetachLink \
+"{model1_name: 'UF_ROBOT', link1_name: 'right_finger', model2_name: 'beer_can', link2_name: 'body'}"
+```
+
+Spawn 物件進入場景（如果不是 world 啟動時載入）
+```
+ros2 run gazebo_ros spawn_entity.py \
+  -file /path/to/beer_can.sdf \
+  -entity beer_can
+```
