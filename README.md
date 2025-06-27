@@ -305,9 +305,8 @@ colcon build --packages-select xarm_moveit_config xarm_gazebo
 source ~/dev_ws/install/setup.bash
 
 # 測試載入你的世界
-ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py \
-  add_gripper:=true \
-  world:=/home/{user_name}/xarm_world_with_ground.world  # /home//.gazebo/models/xarm_world_with_ground.world
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true world:=/home/{user_name}/xarm_world_with_ground.world  
+# /home//.gazebo/models/xarm_world_with_ground.world
 ```
 change your object in `/home/{**user_name**}/.gazebo/models/`
 
