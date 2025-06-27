@@ -117,7 +117,7 @@ git submodule update --init --remote
 source /opt/ros/humble/setup.bash
 cd ~/dev_ws
 pip install -U pip
-pip install rosdep jinja2 typeguard lxml numpy empy==3.3.4 lark-parser
+pip install rosdep jinja2 typeguard lxml numpy==1.24.4 empy==3.3.4 lark-parser
 
 rosdep install --from-paths src --ignore-src -r -y --rosdistro humble
 ```
@@ -183,12 +183,6 @@ using camera `add_realsense_d435i:=true`
 ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true add_realsense_d435i:=true
 ```
 
-**fake camera**
-
-```bash
-ros2 run rqt_image_view rqt_image_view
-```
-
 ...or adding camera in your .world
 ```world
 <model name="top_down_camera">
@@ -225,6 +219,7 @@ and using
 ```
 ros2 run rqt_image_view rqt_image_view
 ```
+
 **重要！請從下拉選單選擇：**
 `/image_raw`
 
@@ -252,7 +247,6 @@ sudo apt install ros-${ROS_DISTRO}-v4l2-camera
 ```
 
 
-
 To see your image:
 ```bash
 ros2 run v4l2_camera v4l2_camera_node --ros-args -p video_device:=/dev/video0
@@ -263,9 +257,6 @@ ros2 run rqt_image_view rqt_image_view
 `/image_raw`
 
 -->
-
-
-
 
 
 ### Try to using the python code
@@ -351,4 +342,14 @@ Spawn 物件進入場景（如果不是 world 啟動時載入）
 ros2 run gazebo_ros spawn_entity.py \
   -file /path/to/beer_can.sdf \
   -entity beer_can
+```
+
+------
+
+```
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true world:=/home/ckall123/.gazebo/models/xarm_world_with_ground.world
+```
+
+```bash
+ros2 run rqt_image_view rqt_image_view
 ```
