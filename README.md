@@ -188,11 +188,49 @@ ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true a
 ```bash
 ros2 run rqt_image_view rqt_image_view
 ```
+
+...or adding camera in your .world
+```world
+<model name="top_down_camera">
+  <static>true</static>
+  <link name="camera_link">
+    <pose>0 0 1.5 0 1.57 0</pose> <!-- 高度 1.5m，往下看 -->
+    <sensor name="top_camera" type="camera">
+      <always_on>true</always_on>
+      <update_rate>30</update_rate>
+      <camera>
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>10</far>
+        </clip>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <cameraName>camera</cameraName>
+        <imageTopicName>/camera/image_raw</imageTopicName>
+        <cameraInfoTopicName>/camera/camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+      </plugin>
+    </sensor>
+  </link>
+</model>
+```
+
+and using 
+```
+ros2 run rqt_image_view rqt_image_view
+```
 **重要！請從下拉選單選擇：**
 `/image_raw`
 
 
 
+<!-- 
 **real camera**
 
 To see what divice you have:
@@ -223,6 +261,12 @@ ros2 run rqt_image_view rqt_image_view
 
 **重要！請從下拉選單選擇：**
 `/image_raw`
+
+-->
+
+
+
+
 
 ### Try to using the python code
 
