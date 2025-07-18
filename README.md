@@ -348,6 +348,7 @@ ros2 run gazebo_ros spawn_entity.py \
 
 ```
 ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true world:=/home/ckall123/.gazebo/models/xarm_world_with_ground.world
+ros2 launch xarm_moveit_config xarm6_moveit_gazebo.launch.py add_gripper:=true world:=/home/m416-3090ti/dev_ws/world/xarm_world_with_ground.world
 ```
 
 ```bash
